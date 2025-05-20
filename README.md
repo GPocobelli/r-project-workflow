@@ -1,9 +1,10 @@
 # Projects
 All projects with additionally R workflow
 
-Creates a complete project folder structure according to William S. Noble
-Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects. PLoS Comput Biol 5(7): e1000424. doi:10.1371/journal.pcbi.1000424
+This guide explains how to set up and use an organized R project workflow based on the method by William S. Noble (2009).
 
+Reference:
+Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects. PLoS Comput Biol 5(7): e1000424
 <br>
 
 # Folder Overview
@@ -18,8 +19,8 @@ Projects/                          # Parent directory for all projects
 ├── ...
 ├── global_tools/                  # Important!
 │    └── project_starter.R
-│    └── helper_functions.R        # other global functions
-│    └── stats_functions.R 
+│    └── helper_functions.R        # Important!
+│    └── stats_functions.R         # other global functions
 ```
 
 <br>
