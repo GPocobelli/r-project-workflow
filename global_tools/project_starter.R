@@ -44,7 +44,7 @@ library(dplyr)
 #' @examples                 `create_new_project("Project1", include_renv = FALSE)`
 #'
 create_new_project <- function(project_name, 
-                               base_path = here::here("Projects"),
+                               base_path = here::here(),
                                include_renv = TRUE,
                                include_gitignore = TRUE,
                                create_readme = TRUE) {
