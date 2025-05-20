@@ -11,6 +11,13 @@
 
 
 
+#' Calculate difference in months between two dates
+#'
+#' @param date1   Date. First date (usually later date).
+#' @param date2   Date. Second date (earlier date).
+#'
+#' @return        Numeric. Difference in months.
+#'
 calc_time <- function(date1, date2) {
   as.numeric(round(difftime(date1, date2, units = "days") / (365.25 / 12), digits = 2))
 }
@@ -22,7 +29,18 @@ calc_time <- function(date1, date2) {
 
 
 
-# define x-Scale
+
+
+
+
+
+#' Get the multiplication factor to convert x-axis for survival plots
+#' define x-Scale
+#' 
+#' @param xscale   Character. Abbreviation for axis transformation, e.g. "m_y" (month to year).
+#'
+#' @return         Numeric. Multiplication factor for axis.
+#'
 get_xscale <- function(xscale = "m_y"){
   # calculations for the right scale
   xtrans <- switch(xscale,
@@ -44,8 +62,21 @@ get_xscale <- function(xscale = "m_y"){
 
 
 
-# Get the Survival Table
-# Get the Median Years
+
+
+
+
+
+
+# Get the Median Survival Table
+#' Title
+#'
+#' @param surv_fit_obj      survfit object 
+#' @param time_unit         For the description in the table
+#'
+#' @returns                 A table with the time at 50% survival probability (+ confidnce intervalls) 
+#'
+#' @examples                Relevant for create_surv_plot()
 get_surv_summary <- function(surv_fit_obj, time_unit = "Years") {
   
   # summary object
@@ -76,8 +107,26 @@ get_surv_summary <- function(surv_fit_obj, time_unit = "Years") {
 
 
 
+
+
+
+
+
+
+
+
 # create table for survival values at specific times 
 # Follow up Survival probability (in %)
+#' Title
+#'
+#' @param surv_fit_obj     survfit object 
+#' @param times            Default = 12, 24, 60 months
+#' @param time_unit        For the description in the table
+#'
+#' @returns                A table with follow up survival probabilities (+ confidnce intervalls) 
+#'                         at 1, 2, and 5 years
+#'                         
+#' @examples               relevant for create_surv_plot() 
 get_surv_time <- function(surv_fit_obj, times = c(12, 24, 60), time_unit = "Years") {
   # summary object
   surv_summary <- summary(surv_fit_obj, times = times)
@@ -103,19 +152,47 @@ get_surv_time <- function(surv_fit_obj, times = c(12, 24, 60), time_unit = "Year
 
 
 
+
+
+
+
+
+
+
 # create a Kaplan-Meier Curve
+#' Title
+#'
+#' @param data                     data
+#' @param surv_fit_obj             survfit object
+#' @param group_factor_formula     Default = 1; Change to calculate for group variable 
+#' @param xscale                   Default = month_year; from get_xscale(); adjustable
+#' @param scale_end                To define x-achsis end point
+#' @param scale_break              Default = 24 months; Break points 
+#' @param title                    Plot title
+#' @param title_size               Font size of the title
+#' @param text_size                
+#' @param risk_table_size          Font size of the risk table
+#' @param tbl2_x                   x-coordinate in the plot for the get_surv_summary() table
+#' @param time_unit                For the description in the table
+#' @param show_tables              Decide whether the tables should be visible in the plot
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 create_surv_plot <- function(data,
                              surv_fit_obj,
-                             group_factor_formula = "1",   # change to calc for different groups
+                             group_factor_formula = "1",
                              xscale = "m_y", 
-                             scale_end,                    # scale_end = 400
+                             scale_end, 
                              scale_break = 24,
-                             title,                        # i.e. "OS for Patients with newly diagnosed FL"
+                             title,
                              title_size = 11, 
                              text_size = 7,
                              risk_table_size = 2.7,
-                             tbl2_x,                       # tbl2_x = 400
-                             time_unit = "Years") {
+                             tbl2_x,
+                             time_unit = "Years",
+                             show_tables = TRUE) {
   
   # Get the calc for the x-scale
   xtrans <- get_xscale(xscale)
@@ -142,12 +219,7 @@ create_surv_plot <- function(data,
                          risk.table.fontsize = risk_table_size
   )
   
-  
-  tbl1 <- get_surv_time(surv_fit_obj, time_unit = time_unit)   # get the Median time
-  tbl1 <- as.data.frame(tbl1)
-  tbl2 <- get_surv_summary(surv_fit_obj, time_unit = time_unit) # get the Followup Survival Probability in %
-  tbl2 <- as.data.frame(tbl2)
-  
+
   
   plot_obj$plot <- plot_obj$plot + 
     scale_x_continuous(breaks = breaksX,
@@ -158,9 +230,21 @@ create_surv_plot <- function(data,
           axis.text.y = element_text(size = title_size, face = "bold"),
           axis.title.y = element_text(size = title_size, face = "bold"),
           title = element_text(size = title_size, face = "bold")
-    ) + theme(legend.position = "none") + 
-    ggpp::annotate(geom = "table", x = 0,  y = 0, label = tbl1) + 
-    ggpp::annotate(geom = "table", x = tbl2_x,  y = 0, label = tbl2)
+    ) + theme(legend.position = "none")
+  
+  
+  if (show_tables){
+    tbl1 <- get_surv_time(surv_fit_obj, time_unit = time_unit)     # get the Followup Survival Probability in %
+    tbl1 <- as.data.frame(tbl1)
+    tbl2 <- get_surv_summary(surv_fit_obj, time_unit = time_unit)   # get the Median time
+    tbl2 <- as.data.frame(tbl2)
+    
+    
+    plot_obj$plot <- plot_obj$plot + 
+      ggpp::annotate(geom = "table", x = 0,  y = 0, label = tbl1) + 
+      ggpp::annotate(geom = "table", x = tbl2_x,  y = 0, label = tbl2)
+  }
+  
   
   plot_obj$table <- plot_obj$table +
     scale_x_continuous(breaks = breaksX2, labels = round(breaksX2 * xtrans, 2), expand = c(0.05, 0.1)) +
@@ -172,16 +256,5 @@ create_surv_plot <- function(data,
 
   return(plot_obj)
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
