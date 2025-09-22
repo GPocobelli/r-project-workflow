@@ -11,77 +11,99 @@ Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects. PLoS
 ### Structure of Projects
 
 ``` text
-Projects/                             # Parent directory for all projects
-├── Projectname_1/
-│    └── Projectname_1.Rproj
-├── Projectname_2/
-├── ...
-├── global_tools/                     # Important!
-│    ├── project_starter.R
-│    ├── helper_functions.R           # Important!
-│    └── stats_functions.R            # other global functions
+
+Projects/                        # Parent directory for all projects
+    ├── Projectname_1/
+         ├── data/
+             ├── raw/                        # Original data (do not modify)
+             └── cleaned/                    # Processed data ready for analysis
+         ├── doc/
+         ├── notebooks/
+             └── YYYY-MM-DD_notes.md         # Project notes and observations
+         ├── results/
+             ├── YYYY-MM-DD_cleaning/
+             └── YYYY-MM-DD_analysis/
+         ├── reports/
+             ├── Projectname_1_report.qmd 
+         ├── R/
+             ├── cleaning_script.R
+             ├── load_lib.R                  # Load required libraries
+             ├── read_config.R               # Project-specific configurations
+             ├── runall_script.R             # Optional - Central analysis pipeline
+             └── other_scripts.R             
+         ├── tests/
+             └── testthat/ # Rscripte die alles jeweils testen.
+         ├── tmp/
+         ├── .gitignore
+         ├── .Renviron
+         ├── _targets.R
+         ├── README.qmd
+         └── Projectname_1.Rproj 
+
+    ├── Projectname_2/
+    ├── ...
+
+
+# Optional:
+
+    ├── global_tools/                         # Important!
+         ├── targets_project_setup.R
+         ├── helper_functions.R               # Important!
+         └── stats_functions.R                # other global functions
+
 ```
 
 <br>
+<br>
 
-### Detailed Project Subfolder Structure
 
-``` text
-Projectname_1/
-├── data/
-│     ├── raw/                        # Original data (do not modify)
-│     └── cleaned/                    # Processed data ready for analysis
-├── notebooks/
-│     └── YYYY-MM-DD_notes.md         # Project notes and observations
-├── results/
-│     ├── YYYY-MM-DD_cleaning/
-│     └── YYYY-MM-DD_analysis/
-├── reports/
-├── scripts/
-│     ├── runall_script.R             # Central analysis pipeline
-│     ├── load_lib.R                  # Load required libraries
-│     ├── read_config.R               # Project-specific configurations
-│     ├── cleaning_script.R
-│     ├── descriptive_stats.R
-│     └── other_scripts.R
-├── tests/
-│     └── validate_input_data.R       # Data validation scripts
-├── Projectname_1_report.qmd
-├── Projectname_1_report.html
-├── .gitignore
-├── Projectname_1.Rproj
-├── _quarto.yml
-├── README.qmd
-└── renv.lock                         # Dependency management (if renv is used)
-```
 
 
 # Workflow
 
 ## Preparation  
 **Ensure the following structure exists:**  
-- Parent folder called **`"Path/to/Projects"`**
-- Subfolder **`Path/to/Projects/global_tools/`**
-- `"global_tools/"` conains the files `"project_starter.R"` & `"helper_functions.R"` (and other relevent files e.g.:`"stats_functions.R"`)
+ - Create a parent path called **`"Path/to/Projects"`**
+ - Download the package file **`"globaltools"`** and save it in the `"Projects"` folder.
+   Then open **`globaltools.Rporj`**. Then **`Build`** -> **`Install Package`**. 
+   The functions are available when loading the package **`"globaltools"`**:
+
+```{r}
+library(globaltools)
+```
+
+
 <br>
 Set your working directory to the main project folder:  
 Working directory should be `"path/to/Projects"`  
 
 ```{r}
-getwd()                         # current working directory
+getwd()                          # current working directory
 setwd("your_path_to/Projects")   # if needed
 ```
 
-<br>
-Load global scripts:  
 
+
+
+<br>
+<br>
+
+**Optional:**  
+Use the R-scripts directly instead of a package.
+
+ - Create a subpath **`Path/to/Projects/global_tools/`**
+ - `"global_tools/"` conains the files `"targets_project_setup.R"` & `"helper_functions.R"` (and other relevent files e.g.:`"stats_functions.R"`)
+
+Load global scripts
 ```{r}
 source("path_to_folder/global_tools/helper_functions.R")
 source("path_to_folder/global_tools/stats_functions.R")
-source("path_to_folder/global_tools/project_starter.R") 
+source("path_to_folder/global_tools/targets_project_setup.R") 
 ```
 
 <br>
+
+
 
 ## Creating a new Project
 
