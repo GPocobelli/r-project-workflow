@@ -42,7 +42,7 @@ Projects/                        # Parent directory for all projects
 
     ├── Projectname_2/
     ├── ...
-
+    ├── globaltoolsR                          # Package
 
 # Optional:
 
@@ -56,32 +56,58 @@ Projects/                        # Parent directory for all projects
 <br>
 <br>
 
+ This script provides a comprehensive function `create_new_project()`.  
+ The Idea is to create a reproducible project.  
+ Oriented on:  
+    Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects.  
+    PLoS Comput Biol 5(7): e1000424. doi:10.1371/journal.pcbi.1000424  
+
+ * **renv**: Is used to initialize isolated and mobile packages.  
+   Initialization via: `renv::init()` and `renv::snapshot()` to store the  
+   version of the installed packages.  
+   `sessionInfo()` is used to see all used packages and versions.  
+   
+ * **Targets‑Outputs**: a `_targets.R`‑Skeleton is created (optional),  
+   supported by `gittargets`.  
+   Example: `tar_git_init()` and `tar_git_snapshot()`  
+
+ * **Modules**: The function `create_new_project()` uses small helper functions.  
+   Each function has a roxgen2 comment block.  
+
+ * **Documentation**: README and Notebook are created, which can be used for  
+   important documentation, like references, research questions, objectives,  
+   (statistical) methods, without a specific presetting to keep it more general.  
+
+ * **Tests**: A testthat skeleton is created. Here, data checks & pipeline tests  
+   can be done.  
 
 
+<br>
+<br>  
 
-# Workflow
+# Workflow  
 
-## Preparation  
-**Ensure the following structure exists:**  
+## Procedure  
+**1. Ensure the following structure exists:**  
  - Create a parent path called **`"Path/to/Projects"`**
- - Download the package file **`"globaltools"`** and save it in the `"Projects"` folder.
-   Then open **`globaltools.Rporj`**. Then **`Build`** -> **`Install Package`**. 
-   The functions are available when loading the package **`"globaltools"`**:
+ - Download the package file **`"globaltoolsR"`** and save it in the `"Projects"` folder.  
+   Then open **`globaltools.Rporj`**. Then **`Build`** -> **`Install Package`**.  
+   The functions are available when loading the package **`"globaltoolsR"`**:  
 
 ```{r}
-library(globaltools)
+library(globaltoolsR)
 ```
 
 
 <br>
-Set your working directory to the main project folder:  
+
+**2. Set your working directory to the main project folder:**   
 Working directory should be `"path/to/Projects"`  
 
 ```{r}
 getwd()                          # current working directory
 setwd("your_path_to/Projects")   # if needed
 ```
-
 
 
 
@@ -105,23 +131,26 @@ source("path_to_folder/global_tools/targets_project_setup.R")
 
 
 
-## Creating a new Project
+**3. Creating a new Project**
 
 Automatically set up a structured project:  
 ```{r}
 create_new_project("Projectname_1")
 ```
   
-Example output: 
-✅ README.qmd has been created.  
-✅ Project created with renv. or ✅ Project created without renv."  
-✅ Project 'Projectname_1' created at: path/to/Projects/Projectname_1  
-✅ .Renviron file created for API keys and secrets."  
-✅ Projectname_1_report.qmd has been created in /Projects/Projectname_1/reports/Projectname_1_report.qmd  
-✅ testthat skeleton created.  
-✅ .gitignore has been created.  
+Example output:  
+✔ Project directory has been created.  
+✔ .Rproj file has been created  
+✔ Project was created using renv.  
+✔ renv was initialied. Please use `renv::snapshot()` after a package installation.  
+✔ _targets.R file has been created  
 
 <br>
+
+Open the newly created `"Projectname_1.Rproj"`, then:
+```{r}
+targets::tar_make()
+```
 
 ## R Files  
   
@@ -136,7 +165,7 @@ source("path/to/Projects/Projectname_1/load.lib.R")
 
 ### Managing Results
 Clearly organize result outputs:  
-If you use a "**`cleaning_script.R`**", before exporting results, use the following function: **`create_results_wd()`**  
+If you use a "**`cleaning_script.R`**", before exporting results, use the following function: **`create_results_wd()`** from `"globaltoolsR"` / `"global_tools"`.  
 This will automatically create a new new date-stamped folder under "**`Projectname_1/results`**" and save exports there. The file will use your specified label, e.g. "**cleaning**".  
 
 ```{r}
@@ -150,18 +179,10 @@ results_dir <- create_results_wd("descriptive_analysis")
 results_dir <- create_results_wd("other_label") 
 ```
 
-<br><br>
-
-**Suggestion for exporting interim datasets:**
-
-```{r}
-# results_dir as defined above
-openxlsx::write.xlsx(data, file = file.path(results_dir, "result_1_data.csv")) 
-
-openxlsx::write.xlsx(data, file = file.path(results_dir, "data_check_or_other_label.csv")) 
-```
-
 <br>
+<br>
+
+**Suggestion for exporting interim datasets:**  
 
 Save fully cleaned datasets ready for further analysis: **`save_cleaned_result()`**. Datasets are then automatically saved in "**`Projectname_1/data/cleaned`**" as `.xlsx, .csv,` and `.rds` files.
 
@@ -187,7 +208,7 @@ data/cleaned/
 
 ### Secure Management of Keys or Tokens
 
-With the `.Renviron` file you create a template for securely storing sensitive tokens or keys, which you can access via
+With the `.Renviron` file a template is created for securely storing sensitive tokens or keys, which you can access via:  
 
 ``` r
 api_token <- Sys.getenv("API_TOKEN")
