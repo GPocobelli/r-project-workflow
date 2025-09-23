@@ -1,3 +1,7 @@
+[![Repo size](https://img.shields.io/github/repo-size/user/repo)](https://github.com/user/repo)
+
+
+
 # R Project Workflow Guide
 
 This document outlines a clear and efficient workflow for organizing R projects and reproducible project, inspired by William S. Noble's recommendations.  
