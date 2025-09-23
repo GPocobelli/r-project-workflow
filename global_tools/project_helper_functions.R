@@ -100,12 +100,12 @@ create_notebook_wd <- function(topic = "notes") {
   # Defining date, name and path
   today <- format(Sys.Date(), "%Y-%m-%d")
   notebook_name <- paste0(today, "_", topic, ".qmd")
-  notebook_path <- here("notebooks", notebook_name)
+  notebook_path <- here("notebook", notebook_name)
   project_name <- basename(here())
   user = Sys.info()["user"]
 
   # Check if directory exists already
-  if (!dir.exists(here("notebooks"))) dir.create(here("notebooks"), recursive = TRUE)
+  if (!dir.exists(here("notebook"))) dir.create(here("notebook"), recursive = TRUE)
 
   if (!file.exists(notebook_path)) {
 
@@ -190,7 +190,7 @@ save_cleaned_result <- function(data,
   if (write_csv2) {
     readr::write_csv2(data, path_csv)  # with ";" as a separator (i.e. Excel)
   } else {
-    readr::write_csv2(data, path_csv)   # with "," as separator
+    readr::write_csv(data, path_csv)   # with "," as separator
   }
   openxlsx::write.xlsx(data, path_xlsx)
 
@@ -255,7 +255,6 @@ read_latest_cleaned_data <- function(path = file.path("data", "cleaned"), detail
 
 
   data_list <- lapply(latest_files, readRDS)
-  #names(data_list) <- gsub("^latest_.*\\.rds$", "\\1", basename(latest_files))
   names(data_list) <- basename(latest_files) %>%
     tools::file_path_sans_ext() %>%
     gsub("^latest_", "", .) %>%
@@ -276,4 +275,5 @@ read_latest_cleaned_data <- function(path = file.path("data", "cleaned"), detail
 
   return(data_list)
 }
+
 
