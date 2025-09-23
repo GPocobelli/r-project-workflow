@@ -46,14 +46,17 @@ Projects/                                              # Parent directory for al
 
     ├── Projectname_2/
     ├── ...
-    ├── globaltoolsR                          # Package
-
+    ├── globaltools                           # Package
+         ├── DESCRIPTION
+         ├── NAMESPACE
+         ├── R/
+         └── man/
 # Optional:
 
     ├── global_tools/                         # Important!
-         ├── targets_project_setup.R
-         ├── helper_functions.R               # Important!
-         └── stats_functions.R                # other global functions
+         ├── targets_project_setup.R          # Important!
+         ├── proj_helper_functions.R          # Important!
+         └── survival_functions.R             # other global functions
 
 ```
 
@@ -104,12 +107,12 @@ Projects/                                              # Parent directory for al
    Needed packages: **fs**, **here**, **renv**, **yaml**, **withr**, **gittargets**, **targets** and **tarchetypes**.  
    If missing it will be installed automatically.  
 
- - Download the package file **`"globaltoolsR"`** and save it in the `"Projects"` folder.  
+ - Download the package file **`"globaltools"`** and save it in the `"Projects"` folder.  
    Then open **`globaltools.Rproj`**. Then **`Build`** -> **`Install Package`**.  
-   The functions are available when loading the package **`"globaltoolsR"`**:  
+   The functions are available when loading the package **`"globaltools"`**:  
 
 ```{r}
-library(globaltoolsR)
+library(globaltools)
 ```
 <br>
 <br> 
@@ -229,7 +232,7 @@ source("path/to/Projects/Projectname_1/load.lib.R")
 ### 5. Managing Results  
 
 Clearly organize result outputs:  
-If you use a R-script with outputs / results, before exporting, use the following function: **`create_results_wd()`** from `"globaltoolsR"` / `"global_tools/helper_functions.R"`.  
+If you use a R-script with outputs / results, before exporting, use the following function: **`create_results_wd()`** from `"globaltools"` / `"global_tools/helper_functions.R"`.  
 This will automatically create a new new date-stamped folder under "**`Projectname_1/results`**" and save exports there. The file will use your specified label, e.g. "**cleaning**".  
 
 ```{r}
@@ -249,7 +252,7 @@ results_dir <- create_results_wd("other_label")
 
 ### 6. Suggestion for exporting interim datasets  
 
-Save fully cleaned datasets ready for further analysis: **`save_cleaned_result()`** from `"globaltoolsR"` / `"global_tools/helper_functions.R"`.  
+Save fully cleaned datasets ready for further analysis: **`save_cleaned_result()`** from `"globaltools"` / `"global_tools/helper_functions.R"`.  
 Datasets are then automatically saved in "**`Projectname_1/data/cleaned`**" as `.xlsx, .csv,` and `.rds` files.
 
 ```{r}
