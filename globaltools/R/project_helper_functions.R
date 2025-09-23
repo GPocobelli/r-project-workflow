@@ -151,7 +151,7 @@ save_cleaned_result <- function(data,
                                 create_latest_copy = TRUE) {
 
   # Directory already exisits?
-  if (!dir.exists(cleaned_dir)) dir.create(cleaned_dir, recursive = TRUE)
+  if (!dir.exists(cleaned_dir)) fs::dir.create(cleaned_dir, recursive = TRUE)
 
   # Date
   today <- format(Sys.Date(), "%Y-%m-%d")
@@ -168,7 +168,7 @@ save_cleaned_result <- function(data,
   if (write_csv2) {
     readr::write_csv2(data, path_csv)  # with ";" as a separator (i.e. Excel)
   } else {
-    readr::write_csv2(data, path_csv)   # with "," as separator
+    readr::write_csv(data, path_csv)   # with "," as separator
   }
   openxlsx::write.xlsx(data, path_xlsx)
 
@@ -233,7 +233,6 @@ read_latest_cleaned_data <- function(path = file.path("data", "cleaned"), detail
 
 
   data_list <- lapply(latest_files, readRDS)
-  #names(data_list) <- gsub("^latest_.*\\.rds$", "\\1", basename(latest_files))
   names(data_list) <- basename(latest_files) %>%
     tools::file_path_sans_ext() %>%
     gsub("^latest_", "", .) %>%
@@ -254,5 +253,6 @@ read_latest_cleaned_data <- function(path = file.path("data", "cleaned"), detail
 
   return(data_list)
 }
+
 
 
