@@ -6,28 +6,6 @@
 
 
 
-#' Returns the path of the folder `global_tools`
-#'
-#' @description
-#' Helper Funktion um zu global tools Pfad zu gelangen
-#'
-#' @param filename       String; Access to the file in the `global_tools` folder
-#'
-#' @returns              Path to the file. Example use: `get_global_tool_path("helper_functions.R")`
-#' @export
-get_global_tool_path <- function(filename) {
-  here::here("global_tools", filename)
-}
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -276,4 +254,5 @@ read_latest_cleaned_data <- function(path = file.path("data", "cleaned"), detail
 
   return(data_list)
 }
+
 
