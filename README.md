@@ -94,18 +94,18 @@ Projects/                                              # Parent directory for al
 
 # Workflow  
 
-## Procedure  
 <br>
+
+## Procedure  
 
 ### 1. Ensure the following structure exists  
  - Create a parent path called **`"Path/to/Projects"`**
  - Prerequisite:  
-   Needed packages: **fs**, **here**, **renv**, **yaml**, **withr**,  
-                  **gittargets**, **targets** and **tarchetypes**.  
+   Needed packages: **fs**, **here**, **renv**, **yaml**, **withr**, **gittargets**, **targets** and **tarchetypes**.  
    If missing it will be installed automatically.  
 
  - Download the package file **`"globaltoolsR"`** and save it in the `"Projects"` folder.  
-   Then open **`globaltools.Rporj`**. Then **`Build`** -> **`Install Package`**.  
+   Then open **`globaltools.Rproj`**. Then **`Build`** -> **`Install Package`**.  
    The functions are available when loading the package **`"globaltoolsR"`**:  
 
 ```{r}
