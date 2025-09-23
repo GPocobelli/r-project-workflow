@@ -1,5 +1,3 @@
-[![Repo size](https://img.shields.io/github/repo-size/user/repo)](https://github.com/user/repo)
-
 
 
 # R Project Workflow Guide
