@@ -1,42 +1,46 @@
 # R Project Workflow Guide
 
-This document outlines a clear and efficient workflow for organizing R projects, inspired by William S. Noble's recommendations.
+This document outlines a clear and efficient workflow for organizing R projects and reproducible project, inspired by William S. Noble's recommendations.  
+The project structure is created by a comprehensive function `create_new_project()`
 
-**Reference:**  
-Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects. PLoS Comput Biol 5(7): e1000424
 <br>
 
-## Main Folder Layout
+**Reference:**  
+```Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects. PLoS Comput Biol 5(7): e1000424```  
+<br>
 
-### Structure of Projects
+
+## Structure of Projects
 
 ``` text
 
-Projects/                        # Parent directory for all projects
+Projects/                                              # Parent directory for all projects
     ├── Projectname_1/
          ├── data/
-             ├── raw/                        # Original data (do not modify)
-             └── cleaned/                    # Processed data ready for analysis
+             ├── raw/                                  # Original data (do not modify)
+             └── cleaned/                              # Processed data ready for analysis
          ├── doc/
          ├── notebooks/
-             └── YYYY-MM-DD_notes.md         # Project notes and observations
+             └── YYYY-MM-DD_notes.md                   # Project notes and observations
          ├── results/
              ├── YYYY-MM-DD_cleaning/
              └── YYYY-MM-DD_analysis/
          ├── reports/
              ├── Projectname_1_report.qmd 
          ├── R/
-             ├── cleaning_script.R
-             ├── load_lib.R                  # Load required libraries
-             ├── read_config.R               # Project-specific configurations
-             ├── runall_script.R             # Optional - Central analysis pipeline
+             ├── cleaning_script_pipeline.R            # central pipeline using R-scripts with specific cleaning functions
+             ├── cleaning_script_1_preparation.R       # R-script with specific cleaning functions
+             ├── cleaning_script_2_transformation.R    # R-script with specific cleaning functions
+             ├── load_lib.R                            # Load required libraries
+             ├── read_config.R                         # Project-specific configurations
+             ├── runall_script.R                       # Optional - Central analysis pipeline
              └── other_scripts.R             
          ├── tests/
              └── testthat/ # Rscripte die alles jeweils testen.
          ├── tmp/
          ├── .gitignore
          ├── .Renviron
-         ├── _targets.R
+         ├── _targets.R                                # Optional - When not needed, central pipeline runall.R is created. 
          ├── README.qmd
          └── Projectname_1.Rproj 
 
@@ -54,31 +58,34 @@ Projects/                        # Parent directory for all projects
 ```
 
 <br>
+<br>  
 <br>
 
- This script provides a comprehensive function `create_new_project()`.  
- The Idea is to create a reproducible project.  
- Oriented on:  
-    Noble WS (2009) A Quick Guide to Organizing Computational Biology Projects.  
-    PLoS Comput Biol 5(7): e1000424. doi:10.1371/journal.pcbi.1000424  
+## Overview
 
- * **renv**: Is used to initialize isolated and mobile packages.  
+
+ * **renv**:  
+   Is used to initialize isolated and mobile packages.  
    Initialization via: `renv::init()` and `renv::snapshot()` to store the  
    version of the installed packages.  
    `sessionInfo()` is used to see all used packages and versions.  
    
- * **Targets‑Outputs**: a `_targets.R`‑Skeleton is created (optional),  
+ * **Targets‑Outputs**:  
+   a `_targets.R`‑Skeleton is created (optional),  
    supported by `gittargets`.  
    Example: `tar_git_init()` and `tar_git_snapshot()`  
 
- * **Modules**: The function `create_new_project()` uses small helper functions.  
+ * **Modules**:  
+   The function `create_new_project()` uses small helper functions.  
    Each function has a roxgen2 comment block.  
 
- * **Documentation**: README and Notebook are created, which can be used for  
+ * **Documentation**:  
+   README and Notebook are created, which can be used for  
    important documentation, like references, research questions, objectives,  
    (statistical) methods, without a specific presetting to keep it more general.  
 
- * **Tests**: A testthat skeleton is created. Here, data checks & pipeline tests  
+ * **Tests**:  
+   A testthat skeleton is created. Here, data checks & pipeline tests  
    can be done.  
 
 
@@ -88,8 +95,15 @@ Projects/                        # Parent directory for all projects
 # Workflow  
 
 ## Procedure  
-**1. Ensure the following structure exists:**  
+<br>
+
+### 1. Ensure the following structure exists  
  - Create a parent path called **`"Path/to/Projects"`**
+ - Prerequisite:  
+   Needed packages: **fs**, **here**, **renv**, **yaml**, **withr**,  
+                  **gittargets**, **targets** and **tarchetypes**.  
+   If missing it will be installed automatically.  
+
  - Download the package file **`"globaltoolsR"`** and save it in the `"Projects"` folder.  
    Then open **`globaltools.Rporj`**. Then **`Build`** -> **`Install Package`**.  
    The functions are available when loading the package **`"globaltoolsR"`**:  
@@ -97,11 +111,33 @@ Projects/                        # Parent directory for all projects
 ```{r}
 library(globaltoolsR)
 ```
+<br>
+<br> 
 
+**Optional:**  
+Use the R-scripts directly instead of a package.
+
+ - Create a subpath **`Path/to/Projects/global_tools/`**
+ - `"global_tools/"` conains the files `"targets_project_setup.R"` & `"helper_functions.R"` (and other relevent files e.g.:`"stats_functions.R"`)
 
 <br>
 
-**2. Set your working directory to the main project folder:**   
+Load global scripts
+```{r}
+source("path_to_folder/global_tools/helper_functions.R")
+source("path_to_folder/global_tools/stats_functions.R")
+source("path_to_folder/global_tools/targets_project_setup.R") 
+```
+
+
+
+<br>
+<br>
+<br>
+
+
+### 2. Set your working directory to the main project folder:  
+  
 Working directory should be `"path/to/Projects"`  
 
 ```{r}
@@ -113,25 +149,11 @@ setwd("your_path_to/Projects")   # if needed
 
 <br>
 <br>
-
-**Optional:**  
-Use the R-scripts directly instead of a package.
-
- - Create a subpath **`Path/to/Projects/global_tools/`**
- - `"global_tools/"` conains the files `"targets_project_setup.R"` & `"helper_functions.R"` (and other relevent files e.g.:`"stats_functions.R"`)
-
-Load global scripts
-```{r}
-source("path_to_folder/global_tools/helper_functions.R")
-source("path_to_folder/global_tools/stats_functions.R")
-source("path_to_folder/global_tools/targets_project_setup.R") 
-```
-
 <br>
 
 
 
-**3. Creating a new Project**
+### 3. Creating a new Project  
 
 Automatically set up a structured project:  
 ```{r}
@@ -152,20 +174,62 @@ Open the newly created `"Projectname_1.Rproj"`, then:
 targets::tar_make()
 ```
 
-## R Files  
-  
-### Loading Libraries  
-`load_lib.R` will be created at **`Projects/Projectname_1/scripts`**. Should be inserted in the respective project, not globally, to avoid unnecessary loading of multiple packages.  
-Load `load_lib.R` script:  
-```{r}
-source("path/to/Projects/Projectname_1/load.lib.R") 
-```
+<br>
+
+```text
+More targets commandos:
+
+        | Commandos               | Explanation                               |
+        | ----------------------- | ----------------------------------------- |
+        | `tar_make()`            | Run pipeline                              |
+        | `tar_visnetwork()`      | Visualization of dependencies             |
+        | `tar_read(target_name)` | Read single target                        |
+        | `tar_load(target_name)` | Load target in workspace                  |
+        | `tar_git_snapshot()`    | Save Git snapshot                         |
+        | `tar_destroy()`         | Delete everything (`_targets/` folder)    |
+```  
 
 <br>
 
-### Managing Results
+<br>
+
+**Optional:**  
+targets & renv are ajustable.  
+use i.e.:   
+```{r}
+create_new_project("Projectname_1", include_renv = FALSE, use_targets = TRUE)
+```
+If `"use_targets = FALSE "` then a central pipeline `runall.R` is created (see below).  
+Here it is possible to run all relevant R-scripts.  
+This method is not very efficient, because all scripts have to run all over again. 
+
+<br>
+<br>
+<br>
+
+
+
+ 
+  
+### 4. Loading Libraries  
+
+`load_lib.R` will be created at **`Projects/Projectname_1/scripts`**. Should be inserted in the respective project, not globally, to avoid unnecessary loading of multiple packages.  
+Load `load_lib.R` script:
+
+```{r}
+source("path/to/Projects/Projectname_1/load.lib.R")
+```
+
+
+<br>
+<br>
+<br>
+
+
+### 5. Managing Results  
+
 Clearly organize result outputs:  
-If you use a "**`cleaning_script.R`**", before exporting results, use the following function: **`create_results_wd()`** from `"globaltoolsR"` / `"global_tools"`.  
+If you use a R-script with outputs / results, before exporting, use the following function: **`create_results_wd()`** from `"globaltoolsR"` / `"global_tools/helper_functions.R"`.  
 This will automatically create a new new date-stamped folder under "**`Projectname_1/results`**" and save exports there. The file will use your specified label, e.g. "**cleaning**".  
 
 ```{r}
@@ -181,17 +245,18 @@ results_dir <- create_results_wd("other_label")
 
 <br>
 <br>
+<br>
 
-**Suggestion for exporting interim datasets:**  
+### 6. Suggestion for exporting interim datasets  
 
-Save fully cleaned datasets ready for further analysis: **`save_cleaned_result()`**. Datasets are then automatically saved in "**`Projectname_1/data/cleaned`**" as `.xlsx, .csv,` and `.rds` files.
+Save fully cleaned datasets ready for further analysis: **`save_cleaned_result()`** from `"globaltoolsR"` / `"global_tools/helper_functions.R"`.  
+Datasets are then automatically saved in "**`Projectname_1/data/cleaned`**" as `.xlsx, .csv,` and `.rds` files.
 
 ```{r}
-save_cleaned_result(data, filename_prefix = "cleaned_data") 
+save_cleaned_result(data, filename_prefix = "data_name") 
 
 # For separator = ";", set: "write_csv2 = TRUE"
-save_cleaned_result(data, filename_prefix = "cleaned_data", 
-                    write_csv2 = TRUE)
+save_cleaned_result(data, filename_prefix = "data_name", write_csv2 = TRUE)
 ```
 
 
@@ -199,56 +264,76 @@ save_cleaned_result(data, filename_prefix = "cleaned_data",
 
 ``` text
 data/cleaned/
-│    └── cleaned_data_2025-04-11.rds
-│    └── cleaned_data_2025-04-11.csv
-│    └── cleaned_data_2025-04-11.xlsx
+    └── data_name_2025-04-11.rds
+    └── data_name_2025-04-11.csv
+    └── data_name_2025-04-11.xlsx
 ```
 
 <br>
+<br>
+<br>
 
-### Secure Management of Keys or Tokens
+### 7. Secure Management of Keys or Tokens  
 
 With the `.Renviron` file a template is created for securely storing sensitive tokens or keys, which you can access via:  
 
 ``` r
-api_token <- Sys.getenv("API_TOKEN")
+api_token <- Sys.getenv("api_token")
+api_url <- Sys.getenv("api_url")
+
+# or via:
+source(".Renviron")
 ```
 
-<br>
+<br><br><br>
 
-### Integrating GitHub
+### 8. Integrating GitHub 
 
 A `.gitignore` file is created for automatic upload to exclude files containing sensitive information, such as API tokens (saved in `.Renviron`).
 
 **Important:**
 Currently excludes `.Rhistory, .RData, .Rproj.user, renv/library, data/raw, results/, .Renviron, .env, PDF, HTML_reports`. Please adapt as needed if you add other files/folders.
 
-<br>
+<br><br><br>
 
-### Project Documentation  
+
+
+## Project Documentation  
 - **README.qmd**  
   For important project documentation, especially for others, a `README` file is included. This is only created once and is a Quarto file, so it can be rendered to PDF or HTML.
   <br>
 - **Notebooks**  
   For clean documentation, notes are helpful. Notebooks can be created with the function `create_notebook_wd()`.  
-  Default name = "`_notes.qmd`"  
+  Default name = "`YYYY-mm-dd_notes.qmd`"
+  
   ``` r
-  create_notebook_wd("notes")
+  create_notebook_wd()
+  create_notebook_wd("1.note")
   ```
-  Automatically places notes into "**`Projectname_1/notebooks`**".
+  Automatically places notes into "**`Projectname_1/notebooks`**":
+    
+  ✔ notebook.qmd has been created: path/to/Projects/Projectname_1/notebooks/2025-09-23_notes.qmd  
+  ✔ notebook.qmd has been created: path/to/Projects/Projectname_1/notebooks/2025-09-23_1.note.qmd
 
-<br>
+  
 
-### Reports
+<br><br><br>
 
-A Quarto report template is automatically created (`Projectname_report.qmd`).
+## Reports
+
+A Quarto report template is automatically created (`Projectname_1_report.qmd`).  
 This template includes all necessary links to functions and libraries.  
-For reports, the **`.quarto.yml`** file is relevant because it contains basic project/person info.
-Must be adapted as needed.
 
-<br>
+**Important:** It is based on a targets pipeline. So if runall.R pipeline is used, this has to be adjusted!  
 
-### Central Pipeline - runall.R
+For reports, the **`.quarto.yml`** file is relevant because it contains basic project/person info.  
+Must be adapted as needed.  
+
+<br><br><br><br>
+
+
+
+## Central Pipeline - runall.R
 
 The runall.R script standardizes your analytical workflow:  
 
