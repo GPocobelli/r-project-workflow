@@ -55,7 +55,7 @@ Projects/                                              # Parent directory for al
 
     ├── global_tools/                         # Important!
          ├── targets_project_setup.R          # Important!
-         ├── proj_helper_functions.R          # Important!
+         ├── project_helper_functions.R       # Important!
          └── survival_functions.R             # other global functions
 
 ```
