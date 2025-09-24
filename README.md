@@ -358,8 +358,8 @@ Load cleaned data
 ``` r
 cleaned_data <- read_latest_cleaned_data(path = here::here("data", "cleaned"))
 head(cleaned_data)
-data_clean_1 <- cleaned_data$...
-data_clean_2 <- cleaned_data$...
+data_clean_1 <- cleaned_data$specific_name
+data_clean_2 <- cleaned_data$specific_name
 names(cleaned_data)
 ```
 
