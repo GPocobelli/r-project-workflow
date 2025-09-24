@@ -356,7 +356,7 @@ source('scripts/cleaning_data.R')
 Load cleaned data  
 `cleaned_data` is a list with the latest files in the path `/data/cleaned/`  
 ``` r
-cleaned_data <- read_latest_cleaned_data(path = here::here("data", "cleaned"))
+cleaned_data <- read_latest_cleaned_data()
 head(cleaned_data)
 data_clean_1 <- cleaned_data$specific_name
 data_clean_2 <- cleaned_data$specific_name
