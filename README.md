@@ -30,30 +30,32 @@ Projects/                                              # Parent directory for al
          ├── reports/
              ├── Projectname_1_report.qmd 
          ├── R/
-             ├── cleaning_script_pipeline.R            # central pipeline using R-scripts with specific cleaning functions
-             ├── cleaning_script_1_preparation.R       # R-script with specific cleaning functions
-             ├── cleaning_script_2_transformation.R    # R-script with specific cleaning functions
-             ├── load_lib.R                            # Load required libraries
-             ├── read_config.R                         # Project-specific configurations
-             ├── runall_script.R                       # Optional - Central analysis pipeline
+             ├── cleaning/
+                    ├── pipeline.R               # central pipeline using R-scripts with functions
+                    ├── 1_preparation.R          # R-script with specific functions used in the pipeline
+                    ├── 2_transformation.R       # R-script with specific functions used in the pipeline
+             ├── load_lib.R                      # Load required libraries
+             ├── read_config.R                   # Project-specific configurations
+             ├── runall_script.R                 # Optional - Central pipeline
              └── other_scripts.R             
          ├── tests/
              └── testthat/ # Rscripte die alles jeweils testen.
          ├── tmp/
          ├── .gitignore
          ├── .Renviron
-         ├── _targets.R                                # Optional - When not needed, central pipeline runall.R is created. 
+         ├── _targets.R                          # Optional - When not needed, central pipeline runall.R is created. 
          ├── README.qmd
          └── Projectname_1.Rproj 
 
     ├── Projectname_2/
     ├── ...
-    ├── globaltools                           # Package
+    ├── globaltools                           # Package - Important!
          ├── DESCRIPTION
          ├── NAMESPACE
          ├── R/
          └── man/
-# Optional:
+
+# ----- Optional: -------------------
 
     ├── global_tools/                         # Important!
          ├── targets_project_setup.R          # Important!
