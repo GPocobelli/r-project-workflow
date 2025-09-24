@@ -119,26 +119,22 @@ library(globaltools)
 <br>
 <br> 
 
-**Optional:**  
-Use the R-scripts directly instead of a package.
 
- - Create a subpath **`Path/to/Projects/global_tools/`**
- - `"global_tools/"` conains the files `"targets_project_setup.R"` & `"helper_functions.R"` (and other relevent files e.g.:`"stats_functions.R"`)
 
-<br>
-
-Load global scripts
+> **Optional:**  
+> Use the R-scripts directly instead of a package.
+> - Create a subpath **`Path/to/Projects/global_tools/`**
+> - `"global_tools/"` conains the files `"targets_project_setup.R"` & `"helper_functions.R"` (and other relevent files e.g.:`"stats_functions.R"`)
+>
+>
+> Load global scripts:
 ```{r}
-source("path_to_folder/global_tools/helper_functions.R")
-source("path_to_folder/global_tools/stats_functions.R")
-source("path_to_folder/global_tools/targets_project_setup.R") 
+source("path_to_folder/Projects/global_tools/helper_functions.R")
+source("path_to_folder/Projects/global_tools/stats_functions.R")
+source("path_to_folder/Projects/global_tools/targets_project_setup.R") 
 ```
 
-
-
-<br>
-<br>
-<br>
+<br><br><br>
 
 
 ### 2. Set your working directory to the main project folder:  
@@ -169,7 +165,7 @@ Example output:
 ✔ Project directory has been created.  
 ✔ .Rproj file has been created  
 ✔ Project was created using renv.  
-✔ renv was initialied. Please use `renv::snapshot()` after a package installation.  
+✔ renv was initialized. Please use `renv::snapshot()` after a package installation.  
 ✔ _targets.R file has been created  
 
 <br>
@@ -198,15 +194,15 @@ More targets commandos:
 
 <br>
 
-**Optional:**  
-targets & renv are ajustable.  
-use i.e.:   
+> **Optional:**  
+> targets & renv are ajustable.  
+> use i.e.:   
 ```{r}
 create_new_project("Projectname_1", include_renv = FALSE, use_targets = TRUE)
 ```
-If `"use_targets = FALSE "` then a central pipeline `runall.R` is created (see below).  
-Here it is possible to run all relevant R-scripts.  
-This method is not very efficient, because all scripts have to run all over again. 
+> If `"use_targets = FALSE "` then a central pipeline `runall.R` is created (see below).  
+> Here it is possible to run all relevant R-scripts.  
+> This method is not very efficient, because all scripts have to run all over again. 
 
 <br>
 <br>
