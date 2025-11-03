@@ -114,8 +114,10 @@ Projects/                                              # Parent directory for al
    If missing it will be installed automatically.  
 
  - Download the package file **`"globaltools"`** and save it in the `"Projects"` folder.  
-   Then open **`globaltools.Rproj`**. Then **`Build`** -> **`Install Package`**.  
-   The functions are available when loading the package **`"globaltools"`**:  
+   Then open **`globaltools.Rproj`**. Then **`Build`** -> **`Document`**.
+   If the procedure is finished open **`Build`** -> **`Install Package`**.  
+   The functions are available when loading the package **`library(globaltools)`**:  
+
 
 ```{r}
 library(globaltools)
